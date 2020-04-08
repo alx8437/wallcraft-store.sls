@@ -1,0 +1,95 @@
+# ================== Order =====================
+
+getOrders:
+  handler: api/order/handler.getOrders
+  tags:
+    client: client
+  timeout: 30
+  events:
+    - http:
+        path: api/order
+        method: get
+        integration: lambda
+        #        tags:
+        #            client: client-name
+        #        timeout: 30
+        #        memorySize: 512
+        cors: true
+        #          origin: '*'
+        #          headers:
+        #            - Content-Type
+        #            - X-Amz-Date
+        #            - Authorization
+        #            - X-Api-Key
+        #            - X-Amz-Security-Token
+        #            - X-Amz-User-Agent
+        #            - Auth-Token
+        #          allowCredentials: false
+        response:
+          headers:
+            Access-Control-Allow-Origin: "'*'"
+            Content-Type: "'application/json'"
+          template: $input.json('$')
+
+getOrdersForClient:
+  handler: api/order/handler.getOrdersForClient
+  tags:
+    client: client
+  timeout: 30
+  events:
+    - http:
+        path: api/order/{cliendId}
+        method: get
+        integration: lambda
+        #        tags:
+        #            client: client-name
+        #        timeout: 30
+        #        memorySize: 512
+        cors: true
+        #          origin: '*'
+        #          headers:
+        #            - Content-Type
+        #            - X-Amz-Date
+        #            - Authorization
+        #            - X-Api-Key
+        #            - X-Amz-Security-Token
+        #            - X-Amz-User-Agent
+        #            - Auth-Token
+        #          allowCredentials: false
+        response:
+          headers:
+            Access-Control-Allow-Origin: "'*'"
+            Content-Type: "'application/json'"
+          template: $input.json('$')
+
+
+createOrder:
+  handler: api/order/handler.createOrder
+  tags:
+    client: client
+  timeout: 30
+  events:
+    - http:
+        path: api/order
+        method: post
+        integration: lambda
+        #        tags:
+        #            client: client-name
+        #        timeout: 30
+        #        memorySize: 512
+        cors: true
+        #          origin: '*'
+        #          headers:
+        #            - Content-Type
+        #            - X-Amz-Date
+        #            - Authorization
+        #            - X-Api-Key
+        #            - X-Amz-Security-Token
+        #            - X-Amz-User-Agent
+        #            - Auth-Token
+        #          allowCredentials: false
+        response:
+          headers:
+            Access-Control-Allow-Origin: "'*'"
+            Content-Type: "'application/json'"
+          template: $input.json('$')
