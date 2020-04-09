@@ -42,7 +42,7 @@ export const OrderSchema = new dynamoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   products: {
     type: [String],

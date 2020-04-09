@@ -7,8 +7,25 @@ export async function getProducts(event) {
 
   try {
     const parameters = event.query;
-    const products = await ProductModel.scan().exec();
-    return { status: 1, data: products };
+    const indexEnd = parameters.page * parameters.per_page;
+    const indexStart = indexEnd - parameters.per_page;
+
+    let products = await ProductModel.scan({ categoryId: parameters.category }).exec();
+    let newProducts: Product[] = [];
+
+    if (parameters.keywords) {
+      products.forEach((product) => {
+        if (product.keywords.includes(parameters.keywords)) {
+          newProducts.push(product);
+        }
+      });
+    } else {
+      newProducts = products;
+    }
+
+    newProducts = newProducts.slice(indexStart, indexEnd);
+
+    return { status: 1, count: newProducts.length, data: newProducts };
   } catch (error) {
     errorHandler(error);
   }
