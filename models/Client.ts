@@ -21,7 +21,7 @@ export const ClientSchema = new dynamoose.Schema({
     type: String,
     hashKey: true,
     default: uuid.v4,
-  },
+  }
 });
 
 export const ClientModel = dynamoose.model('Client', ClientSchema);
