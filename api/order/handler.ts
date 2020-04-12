@@ -1,39 +1,25 @@
-import { checkPromotionalCode, validationClient, validationProducts } from './manager';
 import { errorHandler } from '@helper/error-handler';
-import { OrderModel } from '@models/Order';
-import { ProductModel } from '@models/Product';
+import { Order, OrderModel } from '@models/Order';
+import { OrderManager } from './order.manager';
+import { log } from '@helper/logger';
 
 export async function createOrder(event) {
-  try {
-    const order = event.body;
-    await checkPromotionalCode(order);
-    await validationProducts(order);
-    await validationClient(order);
+  log('create order', event);
 
-    const responseData = await OrderModel.create(order);
-    return { status: 1, clientId: order.clientId, data: responseData };
-  } catch (error) {
-    errorHandler(error);
-  }
-}
-
-export async function getOrders(event) {
   try {
-    const orders = await OrderModel.scan().exec();
-    return { status: 1, data: orders };
+    const order: Order = event.body;
+    const orderManager = new OrderManager();
+    return await orderManager.createOrder(order);
   } catch (error) {
     errorHandler(error);
   }
 }
 
 export async function getOrdersForClient(event) {
-  try {
-    let orders: any = await OrderModel.scan({ clientId: event.path.clientId }).exec();
-    for (let order of orders) {
-      order.products = await ProductModel.batchGet(order.products);
-    }
+  log('get orders for client', event);
 
-    return { status: 1, data: orders };
+  try {
+    return await OrderModel.scan({ clientId: event.path.clientId }).exec();
   } catch (error) {
     errorHandler(error);
   }

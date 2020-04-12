@@ -1,6 +1,7 @@
 import * as dynamoose from 'dynamoose';
 import * as uuid from 'node-uuid';
 import { PromotionalCode } from '@models/PromotionalCode';
+import { Product } from '@models/Product';
 
 dynamoose.AWS.config.update({
   accessKeyId: 'local',
@@ -13,22 +14,20 @@ export interface OrderBody {
   id: string;
   clientId: string;
   date: Date;
-  products: string[];
+  products: Product[];
   fullPrice: number;
   activatedPromotionalCode: boolean;
   promotionalCode?: PromotionalCode;
-  promotionalCodeId?: string;
 }
 
 export class Order implements OrderBody {
   public id: string;
   public clientId: string;
   public date: Date;
-  public products: string[];
+  public products: Product[];
   public fullPrice: number;
   public activatedPromotionalCode: boolean;
   public promotionalCode?: PromotionalCode;
-  public promotionalCodeId?: string;
 }
 
 export const OrderSchema = new dynamoose.Schema({
@@ -45,7 +44,7 @@ export const OrderSchema = new dynamoose.Schema({
     default: Date.now,
   },
   products: {
-    type: [String],
+    type: [Object],
   },
   fullPrice: {
     type: Number,
@@ -53,8 +52,8 @@ export const OrderSchema = new dynamoose.Schema({
   activatedPromotionalCode: {
     type: Boolean,
   },
-  promotionalCodeId: {
-    type: String,
+  promotionalCode: {
+    type: Object,
   },
 });
 

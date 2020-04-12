@@ -68,7 +68,7 @@ checkPromotionalCode:
   timeout: 30
   events:
     - http:
-        path: api/promotional-code/{code}
+        path: api/promotional-code/check
         method: get
         integration: lambda
         #        tags:

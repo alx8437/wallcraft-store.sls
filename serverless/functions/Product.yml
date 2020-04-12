@@ -28,34 +28,3 @@ getProducts:
             Access-Control-Allow-Origin: "'*'"
             Content-Type: "'application/json'"
           template: $input.json('$')
-
-createProducts:
-  handler: api/product/handler.createProducts
-  tags:
-    client: client
-  timeout: 30
-  events:
-    - http:
-        path: api/product
-        method: post
-        integration: lambda
-        #        tags:
-        #            client: client-name
-        #        timeout: 30
-        #        memorySize: 512
-        cors: true
-        #          origin: '*'
-        #          headers:
-        #            - Content-Type
-        #            - X-Amz-Date
-        #            - Authorization
-        #            - X-Api-Key
-        #            - X-Amz-Security-Token
-        #            - X-Amz-User-Agent
-        #            - Auth-Token
-        #          allowCredentials: false
-        response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Content-Type: "'application/json'"
-          template: $input.json('$')
