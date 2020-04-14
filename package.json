@@ -8,6 +8,7 @@
     "deploy:prod": "sls deploy --stage prod",
     "deploy:local": "sls offline start --stage local --v",
     "lint": "tslint --project tsconfig.json \"**/*.ts\"",
+    "docker": "docker run -p 8000:8000 -v /tmp/tmp amazon/dynamodb-local",
     "test": "CI=true jest --watchAll --colors --coverage",
     "test:ci": "CI=true jest --ci --colors --coverage --passWithNoTests",
     "sqs:up": "docker-compose -f docker-compose.yml up -d sqs"
