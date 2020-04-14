@@ -2,13 +2,8 @@ import * as dynamoose from 'dynamoose';
 import * as uuid from 'node-uuid';
 import { PromotionalCode } from '@models/PromotionalCode';
 import { Product } from '@models/Product';
-
-dynamoose.AWS.config.update({
-  accessKeyId: 'local',
-  secretAccessKey: 'local',
-  region: 'us-east-1',
-});
-dynamoose.local(`${process.env.DB_URL}`);
+import { connectLocalDB } from '@services/db-loclal.config';
+connectLocalDB(dynamoose);
 
 export interface OrderBody {
   id: string;

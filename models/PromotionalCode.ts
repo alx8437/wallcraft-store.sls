@@ -1,11 +1,6 @@
 import * as dynamoose from 'dynamoose';
-
-dynamoose.AWS.config.update({
-  accessKeyId: 'local',
-  secretAccessKey: 'local',
-  region: 'us-east-1',
-});
-dynamoose.local(`${process.env.DB_URL}`);
+import { connectLocalDB } from '@services/db-loclal.config';
+connectLocalDB(dynamoose);
 
 export interface PromotionalCodeBody {
   code: string;

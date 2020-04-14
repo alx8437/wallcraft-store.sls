@@ -1,5 +1,5 @@
 export interface ProductBody {
-  id: string;
+  id: number;
   image: string;
   description: string;
   price: number;
@@ -7,7 +7,7 @@ export interface ProductBody {
 }
 
 export class Product implements ProductBody {
-  id: string;
+  id: number;
   image: string;
   description: string;
   price: number;

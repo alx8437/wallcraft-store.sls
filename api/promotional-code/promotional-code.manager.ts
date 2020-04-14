@@ -3,9 +3,10 @@ import { PromotionalCodeModel } from '@models/PromotionalCode';
 export class PromotionalCodeManager {
 
   async checkCode(code: string) {
-    if (code) {
-      const data = await PromotionalCodeModel.queryOne({ code }).exec();
-      return data;
+    if (!code) {
+      throw { message: `Promotional code does't exist!` };
     }
+
+    return await PromotionalCodeModel.queryOne({ code }).exec();
   }
 }
