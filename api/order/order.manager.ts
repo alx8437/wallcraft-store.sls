@@ -5,23 +5,21 @@ import { Order, OrderModel } from '@models/Order';
 export class OrderManager {
 
   async createOrder(order: Order) {
-    await this.checkPromotionalCode(order);
+    await this.validationPromotionalCode(order);
     await this.generateClientId(order);
 
     return OrderModel.create(order);
   }
 
-  async checkPromotionalCode(order: Order) {
-    if (order.activatedPromotionalCode) {
-      if (order.promotionalCode?.code) {
-        const data = await PromotionalCodeModel.scan({
-          code: order.promotionalCode.code,
-          discountPercentage: order.promotionalCode.discountPercentage,
-        }).exec();
+  async validationPromotionalCode(order: Order) {
+    if (order.activatedPromotionalCode && order.promotionalCode?.code) {
+      const data = await PromotionalCodeModel.scan({
+        code: order.promotionalCode.code,
+        discountPercentage: order.promotionalCode.discountPercentage,
+      }).exec();
 
-        if (!data['count']) {
-          throw { message: 'Promotional code does not exist!' };
-        }
+      if (!data['count']) {
+        throw { message: 'Promotional code does not exist!' };
       }
     }
   }

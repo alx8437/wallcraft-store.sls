@@ -13,8 +13,7 @@ export async function createPromotionalCodes(event) {
 
 export async function getPromotionalCodes(event) {
   try {
-    const data = await PromotionalCodeModel.scan().exec();
-    return data;
+    return await PromotionalCodeModel.scan().exec();
   } catch (error) {
     errorHandler(error);
   }
