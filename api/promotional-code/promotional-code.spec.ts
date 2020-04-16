@@ -1,7 +1,26 @@
 import axios from 'axios';
-import { PromotionalCode } from '@models/PromotionalCode';
+import { PromotionalCode, PromotionalCodeModel } from '@models/PromotionalCode';
 import { checkPromotionalCode, createPromotionalCodes, getPromotionalCodes } from './handler';
 import { PromotionalCodeManager } from './promotional-code.manager';
+
+beforeEach(async () => {
+  const codes: PromotionalCode[] = [
+    { code: 'wl10', discountPercentage: 10 },
+    { code: 'wl20', discountPercentage: 20 },
+    { code: 'wl30', discountPercentage: 30 },
+  ];
+  await PromotionalCodeModel.batchPut(codes);
+});
+afterEach(async () => {
+  const codes: PromotionalCode[] = [
+    { code: 'wl10', discountPercentage: 10 },
+    { code: 'wl20', discountPercentage: 20 },
+    { code: 'wl30', discountPercentage: 30 },
+  ];
+  for (let { code } of codes) {
+    await PromotionalCodeModel.delete(code);
+  }
+});
 
 describe('(Unit test)Promotional code module', () => {
   test('Create promotional codes', async () => {
