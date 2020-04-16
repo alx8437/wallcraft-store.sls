@@ -7,7 +7,7 @@ createOrder:
   timeout: 30
   events:
     - http:
-        path: api/order
+        path: api/orders
         method: post
         integration: lambda
         #        tags:
@@ -39,7 +39,7 @@ getOrdersForClient:
   timeout: 30
   events:
     - http:
-        path: api/order/{clientId}
+        path: api/orders/{clientId}
         method: get
         integration: lambda
         #        tags:

@@ -5,7 +5,7 @@ getProducts:
   timeout: 30
   events:
     - http:
-        path: api/product
+        path: api/products
         method: get
         integration: lambda
         #        tags:

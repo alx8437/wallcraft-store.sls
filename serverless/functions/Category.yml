@@ -7,7 +7,7 @@ getCategories:
   timeout: 30
   events:
     - http:
-        path: api/category
+        path: api/categories
         method: get
         integration: lambda
         #        tags:
