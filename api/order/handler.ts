@@ -1,5 +1,5 @@
 import { errorHandler } from '@helper/error-handler';
-import { Order, OrderModel } from '@models/Order';
+import { Order } from '@models/Order';
 import { OrderManager } from './order.manager';
 import { log } from '@helper/logger';
 
@@ -19,7 +19,9 @@ export async function getOrdersForClient(event) {
   log('get orders for client', event);
 
   try {
-    return await OrderModel.scan({ clientId: event.path.clientId }).exec();
+    const { clientId } = event.path;
+    const orderManager = new OrderManager();
+    return orderManager.getOrdersForClient(clientId);
   } catch (error) {
     errorHandler(error);
   }

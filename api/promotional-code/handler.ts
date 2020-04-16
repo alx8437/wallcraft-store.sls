@@ -1,11 +1,11 @@
 import { errorHandler } from '@helper/error-handler';
-import { PromotionalCodeModel } from '@models/PromotionalCode';
 import { PromotionalCodeManager } from './promotional-code.manager';
 
 export async function createPromotionalCodes(event) {
   try {
     const codes = event.body;
-    return await PromotionalCodeModel.batchPut(codes);
+    const promotionalCodeManager = new PromotionalCodeManager();
+    return await promotionalCodeManager.createPromotionalCodes(codes);
   } catch (error) {
     errorHandler(error);
   }
@@ -13,7 +13,8 @@ export async function createPromotionalCodes(event) {
 
 export async function getPromotionalCodes(event) {
   try {
-    return await PromotionalCodeModel.scan().exec();
+    const promotionalCodeManager = new PromotionalCodeManager();
+    return await promotionalCodeManager.getPromotionalCodes();
   } catch (error) {
     errorHandler(error);
   }
@@ -23,7 +24,7 @@ export async function checkPromotionalCode(event) {
   try {
     const { code } = event.query;
     const promotionalCodeManager = new PromotionalCodeManager();
-    return await promotionalCodeManager.checkCode(code);
+    return await promotionalCodeManager.checkPromotionalCode(code);
   } catch (error) {
     errorHandler(error);
   }

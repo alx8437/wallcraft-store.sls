@@ -48,7 +48,6 @@ export const orders: Order[] = [
 
 export const testOrder = {
   id: '2b68d63-1b75-4a90-be00-fe77fb90ff22',
-  clientId: '2b68d63-1b75-4a90-be91-fe77fb90ff46',
   date: new Date(),
   products: [{
     id: 1177724560,
@@ -64,6 +63,6 @@ export const testOrder = {
     keywords: ['incidental people', 'pupils', 'lunch', 'education', 'friendship', 'front view', 'caucasian', 'happy', 'multi-ethnic group', 'boys', 'girls', 'youth', 'horizontal', 'children', 'school', 'copy space', 'sitting at table', 'communication', 'day', 'smiling', 'waist up', 'healthy eating', 'friends', 'schoolchildren', 'elementary school', 'vietnamese ethnicity', 'breakfast', 'school kids', 'pre-teens', 'holding sandwich', 'african american ethnicity', 'lunch break', 'three people', 'primary school', 'selective focus', 'apple', 'looking at each other', 'mixed race person', 'schoolboys', 'kids', 'close up', 'childhood', 'food and drink', 'dinner break', 'eating', 'schoolgirls', 'meal', 'lunchbox', 'outdoors', 'classmates'],
   }],
   fullPrice: 480,
-  activatedPromotionalCode: false,
-  promotionalCode: {},
+  activatedPromotionalCode: true,
+  promotionalCode: { code: 'wl10', discountPercentage: 10 },
 };

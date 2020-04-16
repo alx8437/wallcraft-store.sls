@@ -5,23 +5,26 @@ import { OrderManager } from './order.manager';
 import { Order, OrderModel } from '@models/Order';
 import { codes, orders, testOrder } from './order.helper';
 
+let testOrderId: string;
+
 beforeEach(async () => {
   await OrderModel.batchPut(orders);
   await PromotionalCodeModel.batchPut(codes);
 });
 afterEach(async () => {
-  for (let { id } of orders) {
+  for (const { id } of orders) {
     await OrderModel.delete(id);
   }
-  for (let { code } of codes) {
+  for (const { code } of codes) {
     await PromotionalCodeModel.delete(code);
   }
-  await OrderModel.delete(testOrder.id);
+  await OrderModel.delete(testOrderId);
 });
 
 describe('(Unit test)Order module', () => {
   test('Create order', async () => {
     const data = await createOrder({ body: testOrder });
+    testOrderId = data!.id;
     expect(testOrder.products).toEqual(data?.products);
   });
 
@@ -38,9 +41,26 @@ describe('(Unit test)Order module', () => {
     order.activatedPromotionalCode = true;
     order.promotionalCode = { code: 'nonexistent', discountPercentage: 500 };
     try {
-      await orderManager.validationPromotionalCode(order);
+      await orderManager.createOrder(order);
     } catch (error) {
       expect(error).toEqual({ message: 'Promotional code does not exist!' });
+    }
+  });
+
+  test('Get order for client with wrong params', async () => {
+    try {
+      await getOrdersForClient({});
+    } catch (error) {
+      expect(error).toMatch('[400]');
+    }
+  });
+
+  test('Create order with wrong params', async () => {
+    const order = { clientId: 1123213, products: 'string', activatedPromotionalCode: false };
+    try {
+      await createOrder({ body: order });
+    } catch (error) {
+      expect(error).toMatch('[400]');
     }
   });
 });
@@ -61,7 +81,6 @@ describe('(Integration test) Order module', () => {
       url: 'http://localhost:3000/api/order',
       method: 'post',
       data: testOrder,
-      headers: { 'Content-Type': 'application/json' },
     });
     const orderBody = createOrder.data;
 

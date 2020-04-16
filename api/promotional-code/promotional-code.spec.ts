@@ -1,34 +1,24 @@
 import axios from 'axios';
 import { PromotionalCode, PromotionalCodeModel } from '@models/PromotionalCode';
 import { checkPromotionalCode, createPromotionalCodes, getPromotionalCodes } from './handler';
-import { PromotionalCodeManager } from './promotional-code.manager';
 
-beforeEach(async () => {
-  const codes: PromotionalCode[] = [
-    { code: 'wl10', discountPercentage: 10 },
-    { code: 'wl20', discountPercentage: 20 },
-    { code: 'wl30', discountPercentage: 30 },
-  ];
-  await PromotionalCodeModel.batchPut(codes);
-});
-afterEach(async () => {
-  const codes: PromotionalCode[] = [
-    { code: 'wl10', discountPercentage: 10 },
-    { code: 'wl20', discountPercentage: 20 },
-    { code: 'wl30', discountPercentage: 30 },
-  ];
-  for (let { code } of codes) {
-    await PromotionalCodeModel.delete(code);
-  }
-});
+const codes: PromotionalCode[] = [
+  { code: 'wl10', discountPercentage: 10 },
+  { code: 'wl20', discountPercentage: 20 },
+  { code: 'wl30', discountPercentage: 30 },
+];
 
 describe('(Unit test)Promotional code module', () => {
+  beforeEach(async () => {
+    await PromotionalCodeModel.batchPut(codes);
+  });
+  afterEach(async () => {
+    for (const { code } of codes) {
+      await PromotionalCodeModel.delete(code);
+    }
+  });
+
   test('Create promotional codes', async () => {
-    const codes: PromotionalCode[] = [
-      { code: 'wl10', discountPercentage: 10 },
-      { code: 'wl20', discountPercentage: 20 },
-      { code: 'wl30', discountPercentage: 30 },
-    ];
     const data = await createPromotionalCodes({ body: codes });
     expect(data).toEqual({ Responses: {}, UnprocessedItems: {} });
   });
@@ -45,11 +35,19 @@ describe('(Unit test)Promotional code module', () => {
   });
 
   test('Validation code', async () => {
-    const promotionalCodeManager = new PromotionalCodeManager();
     try {
-      await promotionalCodeManager.checkCode('');
+      await checkPromotionalCode({ query: { code: '' } });
     } catch (error) {
-      expect(error).toEqual({ message: 'Promotional code does not exist!' });
+      expect(error).toMatch('Promotional code does not exist!');
+    }
+  });
+
+  test('Create codes with wrong params', async () => {
+    const codes = [{ code: 100, discountPercentage: 'text' }];
+    try {
+      await createPromotionalCodes({ body: codes });
+    } catch (error) {
+      expect(error).toMatch('[400]');
     }
   });
 });
@@ -59,18 +57,13 @@ describe('(Integration test) Promotional code module', () => {
     await axios({
       url: 'http://localhost:3000/api/promotional-code',
       method: 'post',
-      data: [
-        { code: 'wl10', discountPercentage: 10 },
-        { code: 'wl20', discountPercentage: 20 },
-      ],
-      headers: { 'Content-Type': 'application/json' },
+      data: codes,
     });
 
     const { data } = await axios({
       url: 'http://localhost:3000/api/promotional-code/check',
       method: 'get',
       params: { code: 'wl10' },
-      headers: { 'Content-Type': 'application/json' },
     });
 
     expect(data.discountPercentage).toBe(10);
@@ -81,7 +74,6 @@ describe('(Integration test) Promotional code module', () => {
       url: 'http://localhost:3000/api/promotional-code/check',
       method: 'get',
       params: { code: 'nonexistent' },
-      headers: { 'Content-Type': 'application/json' },
     });
 
     expect(data).toEqual({});

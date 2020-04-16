@@ -1,32 +1,17 @@
-import * as uuid from 'node-uuid';
-import { PromotionalCodeModel } from '@models/PromotionalCode';
 import { Order, OrderModel } from '@models/Order';
+import { OrderService } from '@services/order.service';
 
 export class OrderManager {
 
   async createOrder(order: Order) {
-    await this.validationPromotionalCode(order);
-    await this.generateClientId(order);
+    const orderService = new OrderService();
+    await orderService.validationPromotionalCode(order);
+    await orderService.generateClientId(order);
 
     return OrderModel.create(order);
   }
 
-  async validationPromotionalCode(order: Order) {
-    if (order.activatedPromotionalCode && order.promotionalCode?.code) {
-      const data = await PromotionalCodeModel.scan({
-        code: order.promotionalCode.code,
-        discountPercentage: order.promotionalCode.discountPercentage,
-      }).exec();
-
-      if (!data['count']) {
-        throw { message: 'Promotional code does not exist!' };
-      }
-    }
-  }
-
-  async generateClientId(order: Order) {
-    if (!order.clientId) {
-      order.clientId = uuid.v4();
-    }
+  async getOrdersForClient(clientId: string) {
+    return await OrderModel.scan({ clientId }).exec();
   }
 }
