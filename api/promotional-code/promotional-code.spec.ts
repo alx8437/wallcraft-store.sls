@@ -55,13 +55,13 @@ describe('(Unit test)Promotional code module', () => {
 describe('(Integration test) Promotional code module', () => {
   test('Create list codes and check', async () => {
     await axios({
-      url: 'http://localhost:3000/api/promotional-code',
+      url: 'http://localhost:3000/api/promotional-codes',
       method: 'post',
       data: codes,
     });
 
     const { data } = await axios({
-      url: 'http://localhost:3000/api/promotional-code/check',
+      url: 'http://localhost:3000/api/promotional-codes/check',
       method: 'get',
       params: { code: 'wl10' },
     });
@@ -71,7 +71,7 @@ describe('(Integration test) Promotional code module', () => {
 
   test('Check of a nonexistent promotional code', async () => {
     const { data } = await axios({
-      url: 'http://localhost:3000/api/promotional-code/check',
+      url: 'http://localhost:3000/api/promotional-codes/check',
       method: 'get',
       params: { code: 'nonexistent' },
     });

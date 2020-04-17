@@ -69,7 +69,7 @@ describe('(Integration test) Order module', () => {
   test('Check promotional code and create order', async () => {
     const code = 'wl20';
     const checkCode = await axios({
-      url: 'http://localhost:3000/api/promotional-code/check',
+      url: 'http://localhost:3000/api/promotional-codes/check',
       method: 'get',
       params: { code },
     });
@@ -78,7 +78,7 @@ describe('(Integration test) Order module', () => {
     testOrder.promotionalCode = promotionalCode;
 
     const createOrder = await axios({
-      url: 'http://localhost:3000/api/order',
+      url: 'http://localhost:3000/api/orders',
       method: 'post',
       data: testOrder,
     });

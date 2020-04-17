@@ -12,7 +12,7 @@ describe('(Integration test) Category module', () => {
   test('Get category', async () => {
     const { data: { data } } = await axios({
       method: 'get',
-      url: 'http://localhost:3000/api/category',
+      url: 'http://localhost:3000/api/categories',
       headers: { 'Content-Type': 'application/json' },
     });
 
