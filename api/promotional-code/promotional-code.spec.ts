@@ -8,16 +8,16 @@ const codes: PromotionalCode[] = [
   { code: 'wl30', discountPercentage: 30 },
 ];
 
-describe('(Unit test)Promotional code module', () => {
-  beforeEach(async () => {
-    await PromotionalCodeModel.batchPut(codes);
-  });
-  afterEach(async () => {
-    for (const { code } of codes) {
-      await PromotionalCodeModel.delete(code);
-    }
-  });
+beforeEach(async () => {
+  await PromotionalCodeModel.batchPut(codes);
+});
+afterEach(async () => {
+  for (const { code } of codes) {
+    await PromotionalCodeModel.delete(code);
+  }
+});
 
+describe('(Unit test)Promotional code module', () => {
   test('Create promotional codes', async () => {
     const data = await createPromotionalCodes({ body: codes });
     expect(data).toEqual({ Responses: {}, UnprocessedItems: {} });

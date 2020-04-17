@@ -1,5 +1,6 @@
 import * as dynamoose from 'dynamoose';
 import { connectLocalDB } from '@services/db-loclal.config';
+
 connectLocalDB(dynamoose);
 
 export interface PromotionalCodeBody {
