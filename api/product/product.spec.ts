@@ -8,6 +8,15 @@ describe('(Unit test)Product module', () => {
 
     expect(data.length).toBe(params.per_page);
   });
+
+  test('Get product with wrong params', async () => {
+    const params = { category: -1, page: 1, per_page: 'number', query: '', view: 'full' };
+    try {
+      await getProducts({ query: params });
+    } catch (error) {
+      expect(error).toMatch('[400]');
+    }
+  });
 });
 
 describe('(Integration test) Product module', () => {
@@ -22,14 +31,16 @@ describe('(Integration test) Product module', () => {
     expect(data.length).toBe(params.per_page);
   });
 
-  // test('Get product with wrong params', async () => {
-  //   const params = { category: -1, page: 1, per_page: 'number', query: '', view: 'full' };
-  //   const { data: { data } } = await axios({
-  //     params,
-  //     url: 'http://localhost:3000/api/products',
-  //     method: 'get',
-  //   });
-  //   console.log(data);
-  //   expect(true).toBe(true);
-  // });
+  test('Get product with wrong params', async () => {
+    const params = { category: -1, page: 1, per_page: 'number', query: '', view: 'full' };
+    try {
+      await axios({
+        params,
+        url: 'http://localhost:3000/api/products',
+        method: 'get',
+      });
+    } catch (error) {
+      expect(error.response.status).toBe(400);
+    }
+  });
 });

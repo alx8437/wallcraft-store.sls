@@ -13,7 +13,6 @@ describe('(Integration test) Category module', () => {
     const { data: { data } } = await axios({
       method: 'get',
       url: 'http://localhost:3000/api/categories',
-      headers: { 'Content-Type': 'application/json' },
     });
 
     expect(data.length > 0).toBe(true);
